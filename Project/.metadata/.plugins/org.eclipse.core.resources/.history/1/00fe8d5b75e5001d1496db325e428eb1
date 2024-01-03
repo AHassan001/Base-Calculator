@@ -1,0 +1,62 @@
+ /******************************************************************************
+ *
+ * Module: Number Converter Calculator
+ *
+ * File Name: MainApplication.h
+ *
+ * Description: Header file for the Number converter calculator
+ *
+ * Author: Number Converter Project authors
+ *
+ *******************************************************************************/
+
+
+#ifndef MAINAPPLICATION_H_
+#define MAINAPPLICATION_H_
+
+#include "./MCAL/gpio.h"
+#include "./HAL/lcd.h"
+#include "./HAL/keypad.h"
+#include <util/delay.h> 		/* For the delay functions */
+
+#include "Dec_to_bin.h"
+#include "Dec_to_oct.h"
+#include "Dec_to_Hex.h"
+
+#include "Bin_to_dec.h"
+#include "Bin_to_hex.h"
+#include "Bin_to_oct.h"
+
+#include "Hex_to_dec.h"
+#include "Hex_To_Dec_Trial.h"
+
+#include "Hex_to_bin.h"
+#include "Hex_to_oct.h"
+
+#include "Oct_to_dec.h"
+#include "Oct_to_bin.h"
+#include "Oct_to_Hex.h"
+
+
+#define no_of_bits 8
+#define KEYPAD_PRESSED_TIME 350
+#define show_time 500
+#define ten 10
+
+
+extern uint16 bin[16];
+extern uint8 index_of_binary_num;
+extern uint16 Octal_number[16];
+extern uint8 index_of_hex_number;
+extern uint16 hex[16];
+extern uint16 decimal;
+
+
+/*Prototype Functions*/
+uint8 Converter_main_menu(void);
+void Converter (uint8 key);
+uint16 get_the_decimal_number(void);
+void getHexNumber(void);
+
+
+#endif /* MAINAPPLICATION_H_ */

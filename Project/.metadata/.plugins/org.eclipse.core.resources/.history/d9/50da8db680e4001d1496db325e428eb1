@@ -1,0 +1,46 @@
+/*
+ * Hex_To_Dec_Trial.c
+ *
+ *  Created on: Apr 26, 2023
+ *      Author: 01116
+ */
+#include "Hex_To_Dec_Trial.h"
+
+void HEX_TO_DEC_Trial(void){
+
+
+	    long long decimal, place;
+	    int i = 0, val, len;
+
+	    decimal = 0;
+	    place = 1;
+
+	    // Find the length of total number of hex digit
+	    // finding the length of hexa decimal number
+	    len = index_of_hex_number;
+	    len--;
+
+	    // for loop iterates the hexa decimal number digits
+	    for (i = 0; hex[i] != '='; i++) {
+
+	        // finding the equivalent decimal digit for each
+	        // hexa decimal digit
+	        if (hex[i] >= '0'
+	            && hex[i] <= '9') {
+	            val = hex[i] - 48;
+	        }
+	        else if (hex[i] >= 'a'
+	                 && hex[i] <= 'f') {
+	            val = hex[i] - 97 + 10;
+	        }
+	        else if (hex[i] >= 'A'
+	                 && hex[i] <= 'F') {
+	            val = hex[i] - 65 + 10;
+	        }
+
+	        decimal += val * pow(16, len);
+	        len--;
+	    }
+
+}
+

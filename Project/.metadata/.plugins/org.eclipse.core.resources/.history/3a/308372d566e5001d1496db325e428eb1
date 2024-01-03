@@ -1,0 +1,22 @@
+/******************************************************************************
+ *
+ * Module: hexadecimal to octal converter
+ *
+ * File Name:  Hex_to_oct.c
+ *
+ * Description: Source file for Hex 2 Oct converter
+ *
+ * Author: Number Converter Project authors
+ *
+ *******************************************************************************/
+#include "Hex_to_oct.h"
+
+void hex_to_oct(uint16 hexa_no[])
+{
+	uint16 decimal_number, octa_no = 0;
+
+	decimal_number = HEX_TO_DEC_Trial();
+	Dec_to_oct(decimal_number);
+
+
+}

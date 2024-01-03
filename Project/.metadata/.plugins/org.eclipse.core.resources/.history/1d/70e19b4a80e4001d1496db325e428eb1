@@ -1,0 +1,49 @@
+/*
+ * Hex_To_Dec_Trial.c
+ *
+ *  Created on: Apr 26, 2023
+ *      Author: 01116
+ */
+#include "Hex_To_Dec_Trial.h"
+
+void HEX_TO_DEC_Trial(void){
+
+	uint8  i;
+	uint8 length=0;
+	uint8 cnt; /*for power index*/
+	uint8 dig; /*to store digit*/
+
+
+	cnt = 0;
+	decimal = 0;
+	length = (index_of_hex_number - 1);
+	for(i=length; i>= 0; i--){
+		switch (hex[i]){
+		case 'A':
+			dig = 10;
+			break;
+		case 'B':
+			dig =11;
+			break;
+		case 'C':
+			dig=12;
+			break;
+		case 'D':
+			dig = 13;
+			break;
+		case 'E':
+			dig = 14;
+			break;
+		case 'F':
+			dig=15;
+			break;
+		default:
+			dig= hex[i] - 0x30;
+
+		}
+		decimal = decimal +(dig)* Pow(16, cnt);
+		cnt++;
+	}
+
+}
+

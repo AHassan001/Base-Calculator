@@ -1,0 +1,386 @@
+/*
+ * MainApplication.c
+ *
+ *  Created on: Apr 25, 2023
+ *      Author: 01116
+ */
+#include "MainApplication.h"
+
+#include "MainApplication.h"
+
+void main(void)
+{
+	uint8 key,keypressed,bit_shift;
+	uint16 deci_no;
+	LCD_init();
+
+	while(1)
+	{
+		LCD_displayStringRowColumn(0, 0, "1-dec shift L-R");
+		LCD_displayStringRowColumn(1, 0, "2-Base calc.");
+		key = KEYPAD_getPressedKey();
+		_delay_ms(KEYPAD_PRESSED_TIME);
+
+		switch(key){
+		case 1 :
+
+			deci_no=get_the_decimal_number();
+
+			//			LCD_clearScreen();
+			//			LCD_displayStringRowColumn(0,0,"dec:");
+			//
+			//			number = KEYPAD_getPressedKey();
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0, 0, "1-Left 2-Right");
+			keypressed = KEYPAD_getPressedKey();
+
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0, 0, "how many shift?");
+			bit_shift = KEYPAD_getPressedKey();
+
+			if (keypressed == 1)
+			{
+				ROL(deci_no,bit_shift);
+			}
+			else if(keypressed == 1)
+			{
+				ROR(deci_no,bit_shift);
+			}
+			else
+			{
+				LCD_clearScreen();
+
+				LCD_displayStringRowColumn(0, 0, "Error!!");
+				_delay_ms(2000);
+			}
+
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0, 0, "A ROT:");
+			LCD_moveCursor(0,7);
+			LCD_intgerToString(deci_no);
+			_delay_ms(show_time);
+
+			LCD_displayStringRowColumn(1, 0, "Bin:");
+
+			Dec_to_bin(deci_no);
+			LCD_moveCursor(1,5);
+			for(int i =index_of_binary_num-1; i>=0;i--){
+
+				LCD_intgerToString(bin[i]);
+			}
+			_delay_ms(show_time);
+
+			break;
+		case 2 :
+
+			key = Converter_main_menu();
+			Converter(key);
+
+			break;
+		default:
+
+			LCD_clearScreen();
+
+			LCD_displayStringRowColumn(0, 0, "Error!!");
+			_delay_ms(2000);
+			break;
+		}
+	}
+}
+
+uint8 Converter_main_menu(void)
+{
+	uint8 key_pressed=0;
+
+	LCD_clearScreen();
+	LCD_displayStringRowColumn(0,0,"1-Deci  2-Bin");
+	LCD_displayStringRowColumn(1,0,"3-Hexa  4-Octal");
+	key_pressed = KEYPAD_getPressedKey();
+	return key_pressed;
+}
+
+
+uint16 get_the_decimal_number(void){
+	uint16 number[16],decimal_number;
+	uint8 i=0,j,mul=10,first_num;
+	LCD_clearScreen();
+	LCD_displayStringRowColumn(0,0,"num:");
+	while(KEYPAD_getPressedKey() != '=')
+	{
+		number[i] = KEYPAD_getPressedKey();
+		_delay_ms(KEYPAD_PRESSED_TIME);
+
+
+		LCD_intgerToString(number[i]);
+		i++;
+
+	}
+	number[i]='=';
+	for(j=0;number[j]!='=';j++){
+		first_num=number[0];//1, 2,3,4
+		if(j==1){
+			decimal_number=first_num*mul+number[j];//1*10+2=12,
+		}
+		else if(j>1){
+			decimal_number=decimal_number*mul+number[j];//12*10+3=123,123*10+4
+		}
+		else{
+			decimal_number=first_num;
+		}
+	}
+	//	LCD_clearScreen();
+	//	LCD_displayStringRowColumn(0,0,"dec:");
+	//	LCD_intgerToString(decimal_number);
+	//	_delay_ms(show_time);
+
+	return decimal_number;
+
+}
+
+void Converter (uint8 key){
+	uint16 decimal_number;
+	uint8 option;
+	switch (key){
+
+	/*Decimal case*/
+	case 1:
+		LCD_clearScreen();
+		LCD_displayStringRowColumn(0,0,"1-to Bin  2-to Hex");
+		LCD_displayStringRowColumn(1, 0, "3-to Oct");
+		option=KEYPAD_getPressedKey();
+		_delay_ms(KEYPAD_PRESSED_TIME);
+
+		/*switch case for choosing the option and printing it*/
+		switch(option){
+		case 1:
+			decimal_number=get_the_decimal_number();
+			Dec_to_bin(decimal_number);
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0, 0, "binary number = ");
+			LCD_moveCursor(1, 0);
+			for(int i =index_of_binary_num-1; i>=0;i--){
+
+				LCD_intgerToString(bin[i]);
+			}
+			_delay_ms(show_time);
+			break;
+
+		case 2:
+			decimal_number=get_the_decimal_number();
+			Dec_to_Hex(decimal_number);
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0, 0, "Hex= ");
+			for(int i =index_of_hex_number-1; i>=0;i--){
+				LCD_displayCharacter(hex[i]);
+			}
+			_delay_ms(show_time);
+			break;
+
+		case 3:
+			decimal_number=get_the_decimal_number();
+			Dec_to_oct(decimal_number);
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0, 0, "Oct= ");
+			for(int i =index_of_octal_number-1; i>=0;i--){
+
+				LCD_intgerToString(Octal_number[i]);
+			}
+			_delay_ms(show_time);
+			break;
+
+		default:
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0, 0, "plz enter valid");
+			LCD_displayStringRowColumn(1, 0, "option...");
+			option = KEYPAD_getPressedKey();
+			_delay_ms(KEYPAD_PRESSED_TIME);
+			break;
+		}
+		break;
+
+
+		/*Binary Case*/
+		case 2:
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0,0,"1-to dec  2-to Hex");
+			LCD_displayStringRowColumn(1, 0, "3-to Oct");
+			option=KEYPAD_getPressedKey();
+			_delay_ms(KEYPAD_PRESSED_TIME);
+
+			/*switch case for choosing the option and printing it*/
+			switch(option){
+			case 1:
+				decimal_number=get_the_decimal_number();
+				decimal_number=Bin_to_dec(decimal_number);
+				LCD_clearScreen();
+				LCD_displayStringRowColumn(0, 0, "dec= ");
+				LCD_intgerToString(decimal_number);
+				_delay_ms(show_time);
+				break;
+			case 2:
+				decimal_number=get_the_decimal_number();
+				Bin_to_hex(decimal_number);
+				LCD_clearScreen();
+				LCD_displayStringRowColumn(0, 0, "Hex= ");
+				for(int i =index_of_hex_number-1; i>=0;i--){
+					LCD_displayCharacter(hex[i]);
+				}
+				_delay_ms(show_time);
+				break;
+			case 3:
+				decimal_number=get_the_decimal_number();
+				decimal_number=Bin_to_oct(decimal_number);
+				LCD_clearScreen();
+				LCD_displayStringRowColumn(0, 0, "oct= ");
+				LCD_intgerToString(decimal_number);
+				_delay_ms(show_time);
+				break;
+			default:
+				LCD_clearScreen();
+				LCD_displayStringRowColumn(0, 0, "plz enter valid");
+				LCD_displayStringRowColumn(1, 0, "option...");
+				option = KEYPAD_getPressedKey();
+				_delay_ms(KEYPAD_PRESSED_TIME);
+				break;
+			}
+			break;
+
+
+
+
+			case 3:  	/* Hexa Case*/
+
+				LCD_clearScreen();
+				LCD_displayStringRowColumn(0,0,"1-to dec  2-to bin");
+				LCD_displayStringRowColumn(1, 0, "3-to Oct");
+				option=KEYPAD_getPressedKey();
+				_delay_ms(KEYPAD_PRESSED_TIME);
+
+				/*switch case for choosing the option and printing it*/
+				switch(option){
+				case 1:
+					getHexNumber();
+					LCD_clearScreen();
+					decimal_number=HEX_TO_DEC_Trial();
+					LCD_displayStringRowColumn(0, 0, "Dec: ");
+					LCD_intgerToString(decimal_number);
+					_delay_ms(show_time);
+					break;
+				case 2:
+					getHexNumber();
+					LCD_clearScreen();
+					Hex_to_bin();
+					LCD_displayStringRowColumn(0, 0, "binary number = ");
+					LCD_moveCursor(1, 0);
+					for(int i =index_of_binary_num-1; i>=0;i--){
+
+						LCD_intgerToString(bin[i]);
+					}
+					_delay_ms(show_time);
+					break;
+				case 3:
+					getHexNumber();
+					LCD_clearScreen();
+					hex_to_oct();
+					LCD_displayStringRowColumn(0, 0, "octal number = ");
+					LCD_moveCursor(1, 0);
+					for(int i =index_of_octal_number-1; i>=0;i--){
+
+						LCD_intgerToString(Octal_number[i]);
+					}
+					_delay_ms(show_time);
+					break;
+				default:
+					LCD_clearScreen();
+					LCD_displayStringRowColumn(0, 0, "plz enter valid");
+					LCD_displayStringRowColumn(1, 0, "option...");
+					option = KEYPAD_getPressedKey();
+					_delay_ms(KEYPAD_PRESSED_TIME);
+					break;
+				}
+
+				break;
+
+				/*octal case*/
+				case 4:
+					LCD_clearScreen();
+					LCD_displayStringRowColumn(0,0,"1-to dec  2-to bin");
+					LCD_displayStringRowColumn(1, 0, "3-to hex");
+					option=KEYPAD_getPressedKey();
+					_delay_ms(KEYPAD_PRESSED_TIME);
+
+					/*switch case for choosing the option and printing it*/
+					switch(option){
+					case 1:
+						decimal_number=get_the_decimal_number();
+						LCD_clearScreen();
+						decimal_number = Oct_to_dec(decimal_number);
+						LCD_displayStringRowColumn(0, 0, "Dec: ");
+						LCD_intgerToString(decimal_number);
+						_delay_ms(show_time);
+						break;
+					case 2:
+						decimal_number=get_the_decimal_number();
+						LCD_clearScreen();
+						oct_to_bin(decimal_number);
+						LCD_displayStringRowColumn(0, 0, "Bin: ");
+						for(int i =index_of_binary_num-1; i>=0;i--){
+
+							LCD_intgerToString(bin[i]);
+						}
+						_delay_ms(show_time);
+						break;
+					case 3:
+						decimal_number=get_the_decimal_number();
+						LCD_clearScreen();
+						decimal_number = oct_to_hex(decimal_number);
+						LCD_displayStringRowColumn(0, 0, "Hex: ");
+						LCD_intgerToString(decimal_number);
+						_delay_ms(show_time);
+						break;
+					default:
+						LCD_clearScreen();
+						LCD_displayStringRowColumn(0, 0, "plz enter valid");
+						LCD_displayStringRowColumn(1, 0, "option...");
+						option = KEYPAD_getPressedKey();
+						_delay_ms(KEYPAD_PRESSED_TIME);
+						break;
+
+					}
+
+
+					break;
+					default:
+						LCD_clearScreen();
+						LCD_displayStringRowColumn(0, 0, "plz enter valid");
+						LCD_displayStringRowColumn(1, 0, "option...");
+						main();
+						break;
+	}
+}
+void getHexNumber(void){
+	//	uint16 decimal_number;
+	LCD_clearScreen();
+	LCD_displayStringRowColumn(0,0,"Hex:");
+	index_of_hex_number=0;
+	while(KEYPAD_getPressedKey() != '=')
+	{
+		hex[index_of_hex_number] = KEYPAD_getPressedKey();
+		_delay_ms(KEYPAD_PRESSED_TIME);
+		if(hex[index_of_hex_number] >= 0 && hex[index_of_hex_number] <= 9){
+
+			LCD_intgerToString(hex[index_of_hex_number]);
+		}
+		else{
+			LCD_displayCharacter(hex[index_of_hex_number]);
+		}
+		index_of_hex_number++;
+
+	}
+	hex[index_of_hex_number]='=';
+
+
+
+}
+
+

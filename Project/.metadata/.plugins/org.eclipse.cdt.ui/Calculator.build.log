@@ -1,0 +1,38 @@
+22:44:31 **** Incremental Build of configuration Debug for project Calculator ****
+make all 
+Building file: ../HAL/keypad.c
+Invoking: AVR Compiler
+avr-gcc -lm -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"HAL/keypad.d" -MT"HAL/keypad.o" -c -o "HAL/keypad.o" "../HAL/keypad.c"
+Finished building: ../HAL/keypad.c
+ 
+Building target: Calculator.elf
+Invoking: AVR C Linker
+avr-gcc -lm -Wl,-Map,Calculator.map -mmcu=atmega32 -o "Calculator.elf"  ./MCAL/gpio.o  ./HAL/keypad.o ./HAL/lcd.o  ./.metadata/.plugins/org.eclipse.cdt.make.core/specs.o  ./Bin_to_dec.o ./Bin_to_hex.o ./Bin_to_oct.o ./Dec_to_Hex.o ./Dec_to_bin.o ./Dec_to_oct.o ./Hex_To_Dec_Trial.o ./Hex_to_bin.o ./Hex_to_oct.o ./MATH.o ./MainApplication.o ./Oct_to_Hex.o ./Oct_to_bin.o ./Oct_to_dec.o   
+Finished building target: Calculator.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S Calculator.elf  >"Calculator.lss"
+Finished building: Calculator.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex Calculator.elf  "Calculator.hex"
+Finished building: Calculator.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 Calculator.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:   23566 bytes (71.9% Full)
+(.text + .data + .bootloader)
+
+Data:        437 bytes (21.3% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+22:44:32 Build Finished. 0 errors, 0 warnings. (took 818ms)
+

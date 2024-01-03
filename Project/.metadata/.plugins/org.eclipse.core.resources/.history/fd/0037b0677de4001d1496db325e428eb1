@@ -1,0 +1,35 @@
+/*
+ * Hex_To_Dec_Trial.c
+ *
+ *  Created on: Apr 26, 2023
+ *      Author: 01116
+ */
+#include "Hex_To_Dec_Trial.h"
+
+void HEX_TO_DEC_Trial(void){
+	  uint16 base = 1;
+		    uint8 i = 0, length;
+
+		    decimal = 0;
+		    length = index_of_hex_number-1;
+		    for(i = length; i >= 0; i--)
+		    {
+		        if(hex[i] >= '0' && hex[i] <= '9')
+		        {
+		            decimal += (hex[i] - 48) * base;
+		            base *= 16;
+		        }
+		        else if(hex[i] >= 'A' && hex[i] <= 'F')
+		        {
+		            decimal += (hex[i] - 55) * base;
+		            base *= 16;
+		        }
+		        else if(hex[i] >= 'a' && hex[i] <= 'f')
+		        {
+		            decimal += (hex[i] - 87) * base;
+		            base *= 16;
+		        }
+		    }
+
+}
+

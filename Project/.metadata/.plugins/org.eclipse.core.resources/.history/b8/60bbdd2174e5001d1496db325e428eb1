@@ -1,0 +1,84 @@
+/******************************************************************************
+ *
+ * Module: hexadecimal to decimal converter
+ *
+ * File Name:  Hex_to_dec.c
+ *
+ * Description: Source file for Hex 2 Dec converter
+ *
+ * Author: Number Converter Project authors
+ *
+ *******************************************************************************/
+
+#include "Hex_to_dec.h"
+
+/*program to convert number from hexadecimal to decimal*/
+
+
+void Hex_to_dec(uint8 index_of_hex)
+{
+
+	    uint16 base = 1;
+	    uint8 i = 0, length;
+
+	    decimal = 0;
+	    length = index_of_hex-1;
+	    for(i = length; i >= 0; i--)
+	    {
+	        if(hex[i] >= '0' && hex[i] <= '9')
+	        {
+	            decimal += (hex[i] - 48) * base;
+	            base *= 16;
+	        }
+	        else if(hex[i] >= 'A' && hex[i] <= 'F')
+	        {
+	            decimal += (hex[i] - 55) * base;
+	            base *= 16;
+	        }
+	        else if(hex[i] >= 'a' && hex[i] <= 'f')
+	        {
+	            decimal += (hex[i] - 87) * base;
+	            base *= 16;
+	        }
+	    }
+
+
+}
+
+
+////    char hex[32] = { 0 };
+//    uint8 dec, i;
+//    uint8 cnt; /*for power index*/
+//    uint8 dig; /*to store digit*/
+//
+////    printf("Enter hex value: ");
+////    gets(hex);
+//
+//    cnt = 0;
+//    dec = 0;
+//    for (i = (strlen(hex) - 1); i >= 0; i--) {
+//        switch (hex[i]) {
+//        case 'A':
+//            dig = 10;
+//            break;
+//        case 'B':
+//            dig = 11;
+//            break;
+//        case 'C':
+//            dig = 12;
+//            break;
+//        case 'D':
+//            dig = 13;
+//            break;
+//        case 'E':
+//            dig = 14;
+//            break;
+//        case 'F':
+//            dig = 15;
+//            break;
+//        default:
+//            dig = hex[i] - 0x30;
+//        }
+//        dec = dec + (dig)* Pow(16,cnt);
+//        cnt++;
+//    }

@@ -1,0 +1,51 @@
+/******************************************************************************
+ *
+ * Module: Binary to HexaDecimal converter
+ *
+ * File Name: Bin_to_hex.c
+ *
+ * Description: Source file for Bin 2 Hex converter
+ *
+ * Author: Number Converter Project authors
+ *
+ *******************************************************************************/
+
+#include "Bin_to_hex.h"
+
+void Bin_to_hex(uint16 binnum)
+{
+
+	 uint16 mul=1, count=1, rem;
+	 index_of_hex_number=0;
+	    char hexnum;
+
+	    while(binnum!=0)
+	    {
+	        rem = binnum%10;
+	        hexnum = hexnum + (rem*mul);
+	        if(count%4==0)
+	        {
+	            if(hexnum<10)
+	                hex[index_of_hex_number] = hexnum;
+	            else
+	                hex[index_of_hex_number] = hexnum+55;
+	            mul = 1;
+	            hexnum = 0;
+	            count = 1;
+	            index_of_hex_number++;
+	        }
+	        else
+	        {
+	            mul = mul*2;
+	            count++;
+	        }
+	        binnum = binnum/10;
+	    }
+	    if(count!=1)
+	        hex[index_of_hex_number] = hexnum;
+	    if(count==1)
+	        index_of_hex_number--;
+
+}
+
+
